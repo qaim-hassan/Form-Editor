@@ -12,9 +12,18 @@ const app = express();
 const PORT = Number(process.env.PORT) || 4000;
 
 app.use(helmet());
+// Normalize CORS origins from env (comma-separated). Trim whitespace and trailing slashes.
+const rawCors = process.env.CORS_ORIGIN ?? "http://localhost:3000";
+const allowedOrigins = Array.isArray(rawCors)
+  ? rawCors.map((s) => String(s).trim().replace(/\/+$|\s+/g, ""))
+  : String(rawCors)
+      .split(",")
+      .map((s) => s.trim().replace(/\/+$/g, ""))
+      .filter(Boolean);
+
 app.use(
   cors({
-    origin: process.env.CORS_ORIGIN?.split(",") ?? "http://localhost:3000",
+    origin: allowedOrigins,
     credentials: true,
   })
 );
