@@ -1,4 +1,5 @@
 import { z } from "zod";
+import type { FormField } from "@/types";
 
 export const fieldTypes = [
   "text",
@@ -33,7 +34,7 @@ function normalizeCheckboxValue(val: unknown): "true" | "false" {
 }
 
 export function buildSubmissionSchema(
-  fields: { id: string; type: string; required: boolean; label: string; options?: string[] | null }[]
+  fields: FormField[]
 ) {
   const shape: Record<string, z.ZodTypeAny> = {};
 
