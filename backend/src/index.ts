@@ -39,7 +39,7 @@ app.use("/api/submissions", submissionsRouter);
 
 app.use(errorHandler);
 
-if (process.env.NODE_ENV !== "test") {
+if (!process.env.VERCEL && process.env.NODE_ENV !== "test") {
   app.listen(PORT, () => {
     console.log(`API listening on http://localhost:${PORT}`);
   });

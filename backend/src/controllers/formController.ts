@@ -12,7 +12,8 @@ export async function listForms(_req: Request, res: Response, next: NextFunction
 
 export async function getForm(req: Request, res: Response, next: NextFunction) {
   try {
-    const form = await formService.getFormById(req.params.id);
+    const id = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
+    const form = await formService.getFormById(id as string);
     res.json(form);
   } catch (err) {
     next(err);
@@ -30,7 +31,8 @@ export async function createForm(req: Request, res: Response, next: NextFunction
 
 export async function updateForm(req: Request, res: Response, next: NextFunction) {
   try {
-    const form = await formService.updateForm(req.params.id, req.body);
+    const id = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
+    const form = await formService.updateForm(id as string, req.body);
     res.json(form);
   } catch (err) {
     next(err);
@@ -39,7 +41,8 @@ export async function updateForm(req: Request, res: Response, next: NextFunction
 
 export async function deleteForm(req: Request, res: Response, next: NextFunction) {
   try {
-    const result = await formService.deleteForm(req.params.id);
+    const id = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
+    const result = await formService.deleteForm(id as string);
     res.json(result);
   } catch (err) {
     next(err);
