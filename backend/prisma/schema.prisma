@@ -1,0 +1,78 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model FormTemplate {
+  id               String   @id @default(uuid())
+  name             String
+  description      String?
+  version          Int      @default(1)
+  parentTemplateId String?
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  parent   FormTemplate?  @relation("TemplateVersions", fields: [parentTemplateId], references: [id], onDelete: SetNull)
+  children FormTemplate[] @relation("TemplateVersions")
+
+  fields      FormField[]
+  submissions FormSubmission[]
+
+  @@index([parentTemplateId])
+  @@index([name])
+}
+
+model FormField {
+  id             String   @id @default(uuid())
+  formTemplateId String
+  label          String
+  type           FieldType
+  required       Boolean  @default(false)
+  placeholder    String?
+  helpText       String?
+  options        Json?
+  order          Int      @default(0)
+
+  formTemplate FormTemplate @relation(fields: [formTemplateId], references: [id], onDelete: Cascade)
+  values       FormSubmissionValue[]
+
+  @@index([formTemplateId])
+}
+
+model FormSubmission {
+  id             String   @id @default(uuid())
+  formTemplateId String
+  createdAt      DateTime @default(now())
+
+  formTemplate FormTemplate          @relation(fields: [formTemplateId], references: [id], onDelete: Cascade)
+  values       FormSubmissionValue[]
+
+  @@index([formTemplateId])
+}
+
+model FormSubmissionValue {
+  id           String @id @default(uuid())
+  submissionId String
+  fieldId      String
+  value        String
+
+  submission FormSubmission @relation(fields: [submissionId], references: [id], onDelete: Cascade)
+  field      FormField      @relation(fields: [fieldId], references: [id], onDelete: Cascade)
+
+  @@unique([submissionId, fieldId])
+  @@index([submissionId])
+}
+
+enum FieldType {
+  text
+  textarea
+  number
+  email
+  date
+  select
+  checkbox
+}
