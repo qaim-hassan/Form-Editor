@@ -48,8 +48,7 @@ export default function FillFormPage() {
       const values = template.fields.map((field) => {
         let value = data[field.id!] ?? "";
         if (field.type === "checkbox") {
-          value =
-            value === true || value === "true" || value === "on" ? "true" : "false";
+          value = value === "true" || value === "on" ? "true" : "false";
         }
         return { fieldId: field.id!, value: String(value) };
       });
