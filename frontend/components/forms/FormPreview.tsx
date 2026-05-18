@@ -23,7 +23,7 @@ export function FormPreview({ name, description, fields }: FormPreviewProps) {
             {field.type === "textarea" ? (
               <textarea
                 disabled
-                placeholder={field.placeholder}
+                placeholder={field.placeholder ?? undefined}
                 className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm"
                 rows={3}
               />
@@ -46,7 +46,7 @@ export function FormPreview({ name, description, fields }: FormPreviewProps) {
               <input
                 disabled
                 type={field.type === "number" ? "number" : field.type}
-                placeholder={field.placeholder}
+                placeholder={field.placeholder ?? undefined}
                 className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm"
               />
             )}
