@@ -27,6 +27,12 @@ app.use(
     credentials: true,
   })
 );
+
+// Ensure preflight requests for API routes are handled with CORS headers
+app.options(
+  "/api/*",
+  cors({ origin: allowedOrigins, credentials: true, optionsSuccessStatus: 204 })
+);
 app.use(morgan(process.env.NODE_ENV === "production" ? "combined" : "dev"));
 app.use(express.json({ limit: "1mb" }));
 
