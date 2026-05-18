@@ -29,6 +29,12 @@ app.use(
     legacyHeaders: false,
   })
 );
+app.get("/", (_req, res) => {
+  res.json({
+    status: "ok",
+    message: "API is running. Use /health for status and /api/* for endpoints.",
+  });
+});
 
 app.get("/health", (_req, res) => {
   res.json({ status: "ok", timestamp: new Date().toISOString() });
