@@ -1,0 +1,40 @@
+import express from "express";
+import cors from "cors";
+import helmet from "helmet";
+import morgan from "morgan";
+import rateLimit from "express-rate-limit";
+import formsRouter from "./routes/forms.js";
+import submissionsRouter from "./routes/submissions.js";
+import { errorHandler } from "./middleware/errorHandler.js";
+
+const app = express();
+
+app.use(helmet());
+app.use(
+  cors({
+    origin: process.env.CORS_ORIGIN?.split(",") ?? "http://localhost:3000",
+    credentials: true,
+  })
+);
+app.use(morgan(process.env.NODE_ENV === "production" ? "combined" : "dev"));
+app.use(express.json({ limit: "1mb" }));
+
+app.use(
+  rateLimit({
+    windowMs: Number(process.env.RATE_LIMIT_WINDOW_MS) || 15 * 60 * 1000,
+    max: Number(process.env.RATE_LIMIT_MAX) || 100,
+    standardHeaders: true,
+    legacyHeaders: false,
+  })
+);
+
+app.get("/health", (_req, res) => {
+  res.json({ status: "ok", timestamp: new Date().toISOString() });
+});
+
+app.use("/api/forms", formsRouter);
+app.use("/api/submissions", submissionsRouter);
+
+app.use(errorHandler);
+
+export default app;

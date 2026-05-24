@@ -12,10 +12,12 @@
     "db:push": "prisma db push",
     "db:seed": "tsx prisma/seed.ts",
     "postinstall": "prisma generate",
+    "vercel-build": "prisma generate && prisma migrate deploy",
     "test": "vitest run",
     "test:watch": "vitest"
   },
   "dependencies": {
+    "@vercel/node": "^5.1.14",
     "@prisma/client": "^6.8.2",
     "cors": "^2.8.5",
     "dotenv": "^16.5.0",
