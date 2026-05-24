@@ -99,4 +99,4 @@ npm.cmd run dev
 | Frontend “Cannot reach the API” | Wrong `NEXT_PUBLIC_API_URL`, or backend `/health` not 200. Redeploy frontend after changing env vars. |
 | CORS error in browser | Set `CORS_ORIGIN` to frontend origin exactly (scheme + host, no path). |
 | “Database unavailable” | Run `prisma migrate deploy` against Neon; confirm pooled `DATABASE_URL` and direct `DIRECT_URL`. |
-| Migrations fail on Vercel build | Ensure `DIRECT_URL` is the **non-pooler** Neon host. |
+| Migrations fail on Vercel build | Ensure `DIRECT_URL` is the **non-pooler** Neon host. ||
