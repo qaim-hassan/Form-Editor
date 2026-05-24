@@ -93,8 +93,7 @@ cd backend && npm run db:seed
 
 | Variable | Description |
 |----------|-------------|
-| `DATABASE_URL` | PostgreSQL connection string (Neon pooler on Vercel) |
-| `DIRECT_URL` | Direct PostgreSQL URL for migrations (same as `DATABASE_URL` locally) |
+| `DATABASE_URL` | PostgreSQL connection string (Neon pooler on Vercel; direct URL for local migrations) |
 | `PORT` | API port (default `4000`) |
 | `CORS_ORIGIN` | Allowed frontend origin(s), comma-separated |
 | `RATE_LIMIT_WINDOW_MS` | Rate limit window |
@@ -133,15 +132,16 @@ cd backend && npm run db:seed
 ### Backend — Vercel (serverless)
 
 1. Import repo with **Root Directory** = `backend`.
-2. Set `DATABASE_URL` (Neon pooler), `DIRECT_URL` (Neon direct), `CORS_ORIGIN`, `NODE_ENV=production`.
-3. Deploy; build runs `vercel-build` (Prisma generate + migrate).
+2. Set `DATABASE_URL` (Neon pooler), `CORS_ORIGIN`, `NODE_ENV=production`.
+3. Run `prisma migrate deploy` once from your machine (see deploy doc).
+4. Deploy; build runs `vercel-build` (`prisma generate` only).
 
 See [docs/DEPLOY-VERCEL.md](docs/DEPLOY-VERCEL.md) for full steps.
 
 ### Backend — Render / Railway / Fly.io (alternative)
 
 1. Deploy `backend` with Node 20+.
-2. Set `DATABASE_URL`, `DIRECT_URL`, `CORS_ORIGIN` (your Vercel URL), `NODE_ENV=production`.
+2. Set `DATABASE_URL`, `CORS_ORIGIN` (your Vercel URL), `NODE_ENV=production`.
 3. Build: `npm install && npx prisma generate && npm run build`
 4. Start: `npx prisma migrate deploy && npm start`
 
